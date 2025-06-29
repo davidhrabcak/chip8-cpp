@@ -1,0 +1,5 @@
+lib/
+build/
+intTest
+sdl2/
+include/
