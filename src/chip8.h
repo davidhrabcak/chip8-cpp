@@ -6,11 +6,13 @@ class chip8 {
                 int get_display_pos(int x, int y);
                 int get_sp();
                 void set_sp(int val);
+                bool get_sound_played();
+                void clear_sound_played();
                 
                 void initialize();
                 void load(const char* filename);
                 int emulate_cycle();
-
+                
                 bool key[16];
                 unsigned char graphics[64 * 32]; // display
 

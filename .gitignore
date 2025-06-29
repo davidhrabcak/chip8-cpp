@@ -3,3 +3,4 @@ build/
 intTest
 sdl2/
 include/
+chip8

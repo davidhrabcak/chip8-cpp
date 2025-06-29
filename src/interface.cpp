@@ -1,6 +1,7 @@
 #include "chip8.h"
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <cmath>
 #include <stdio.h>
 using namespace std;
 
@@ -36,6 +37,10 @@ chip8 my_chip;
 // SDL objects
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
+
+void SDL_beep() {
+    printf("\abeep\n");
+}
 
 // Initialize SDL and create a window
 bool init_SDL() {
@@ -134,7 +139,7 @@ int main(int argc, const char* argv[]) {
         printf("Loading \"%s\"...\n", argv[1]);
         my_chip.load(argv[1]);
     } else {
-        my_chip.load("Ibm_logo.ch8");
+        my_chip.load("test/Ibm_logo.ch8");
     }
 
     while (running) {
@@ -144,11 +149,15 @@ int main(int argc, const char* argv[]) {
             draw_frame(my_chip.graphics);
         }
         handle_key_presses(my_chip.key);
+        if (my_chip.get_sound_played()) {
+            SDL_beep();
+            my_chip.clear_sound_played();
+        }
+
         SDL_Delay(16); // 60 hz
         }
 
         
-
 
     clean_up();
     return 0;

@@ -11,6 +11,7 @@ unsigned short opcode;
 unsigned short stack[16]; // stack for jumps
 unsigned short sp; // stack pointer
 unsigned int I; // index register
+bool sound_played;
 
 unsigned char memory[4096];
 
@@ -34,8 +35,12 @@ unsigned char chip8_fontset[80] = {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-void beep() {
-    printf("\a\n");
+void chip8::clear_sound_played() {
+    sound_played = false;
+}
+
+bool chip8::get_sound_played() {
+    return sound_played;
 }
 
 bool chip8::get_df() {
@@ -79,6 +84,9 @@ void chip8::initialize() {
 
     // clear memory
     memset(memory, 0, 4096*sizeof(unsigned char));
+
+    //clear sound flag
+    sound_played = false;
 
     // load fontset
     for (int i = 0; i < 80; i++) {
@@ -464,12 +472,14 @@ int chip8::emulate_cycle() {
     // update timers
     if (delay_timer > 0)  delay_timer--;
     if (sound_timer > 0) {
-        if (sound_timer == 1) beep();
+        if (sound_timer == 1) sound_played = true;
         sound_timer--;
     }
-    printf("PC: %d\n", this->reg.pc);
-    printf("ST: %d\n", sound_timer);
-    printf("V2: %d\n", this->reg.V[2]);
+    //Debug prints
+    //printf("PC: %d\n", this->reg.pc);
+    //printf("ST: %d\n", sound_timer);
+    //printf("V2: %d\n", this->reg.V[2]);
+    
     return 1;
 }
 
